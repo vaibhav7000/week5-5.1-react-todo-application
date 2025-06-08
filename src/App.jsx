@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CustomInput from "./components/CustomInput";
 import CustomSubmissionButton from "./components/CustomSubmissionButton";
+import Todo from './components/Todo.jsx'
 import { string, z } from "zod"
 
 export default function App() {
@@ -26,24 +27,29 @@ export default function App() {
             alert("Add a valid description");
             return;
         }
+
         
         // this api will update the todos and also been reflected in the document
         setTodos([...todos, {
             title, description
         }])
 
+        // these methods does not get invoked immediately by the react
+        setTitle("");
+        setDescription("");
+
 
     }
 
     return (
         <div className="todo-container" style={{display: "flex", flexDirection:"column", gap: "20px", margin: "20px"}}>
-            <CustomInput label="Title" value={title} setValue={setTitle} placeHolder="Enter todo title" />
-            <CustomInput label="Description" value={description} setValue={setDescription} placeHolder="Enter todo description" />
+            <CustomInput id="title" label="Title" value={title} setValue={setTitle} placeHolder="Enter todo title" />
+            <CustomInput id="description" label="Description" value={description} setValue={setDescription} placeHolder="Enter todo description" />
             <CustomSubmissionButton handler={addTodoHandler} />
             {/* if we provide array that contains the html elements build from the React Syntax than all of them will be rendered on the screen  */}
 
-            {/* JSX supports only "expressions" (any piece of code that returns / produces the value like function calls, ternary operatord ), not statements (piece of code that peforms some task (for loop) but does not returns value) */}
-
+            {/* JSX supports only "expressions" (any piece of code that returns / produces the value like function calls array apis like map, filter, ternary operatord ), not statements (piece of code that peforms some task (for loop) but does not returns value) */}
+            {todos.map((todo, index) => <Todo key={index.toString()} title={todo.title} description={todo.description} /> )}
         </div>
     )
 }
